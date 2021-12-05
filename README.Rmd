@@ -1,0 +1,56 @@
+---
+title: "Yangyang Lyu"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(tidyverse)
+library(sf)
+library(maps)
+```
+
+
+
+
+## Sleep time of one of my favorite animals
+
+I like the elephants very much becasue they are smart, that we could develop deep relationship with them. It is interesting to see how little time they actually spend on sleeping, but the average lifespan of the elephant is long in terms of animals' lifespan. 
+
+```{r msleep}
+
+Herbi <- msleep %>% 
+ filter(name=="Asian elephant"|name=="African elephant")
+Herbi
+
+```
+
+## Three cities with speical meaning to me 
+
+I spent one exchange year in the State, MO and these three cities are meaningful to me. Stanberry is where I stayed for most of the times that I lived there and also attended local school. Kansas City and St. Louis are two important cities in MO and I went there for trips with my friends. 
+
+```{r pressure, echo=FALSE}
+
+USA_map <-  maps::map("state", plot = FALSE, fill = TRUE)
+
+USA_sf <- USA_map %>% 
+  st_as_sf(crs = 4326)
+
+MO_cities <- tibble(
+  name = c("Stanberry", "St.Louis", "Kansas City"), 
+  lat = c(40.2178, 38.6270, 39.0997), 
+  lon = c(-94.5383, -90.1994, -94.5786)
+)
+MO_cities_sf <- MO_cities %>% 
+   st_as_sf(coords=c("lon","lat"),crs=4326)
+
+MO_sf <- USA_sf %>% 
+ filter(ID == "missouri")
+ ggplot() +
+        geom_sf(data = MO_sf)+
+   geom_sf(data = MO_cities_sf, aes(col = name), size = 3) 
+
+```
+
+
